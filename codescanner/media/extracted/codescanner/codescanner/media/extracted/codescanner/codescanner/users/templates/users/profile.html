@@ -1,0 +1,28 @@
+{% extends "users/dashboard.html" %} 
+{% load static %} 
+{% block content %}
+<div class="flex w-full">
+  <div class="p-2 flex flex-col gap-10 py-10 px-16">
+    <div
+      class="rounded-full w-96 border-2 border-emerald-100 p-1 shadow-lg shadow-emerald-300"
+    >
+      <img class="w-fill h-fill rounded-full " src="{% static "./imgs/eric.jpg" %}" alt="person">
+    </div>
+    <div class="bg-slate-50 p-2 border-2 border-emerald-100 hover:border-emerald-200 shadow-md">
+      <input type="file" class="outline-none w-full" />
+    </div>
+  </div>
+
+  <div class=" flex flex-col text-center shadow-xl">
+    <div class="text-center bg-emerald-100">
+      <span class="font-bold text-emerald-700">User Infomation</span>
+    </div>
+    <div>
+      <span class="flex gap-5">
+        <p class="p-2">username:</p>
+        <p class="bg-slate-100 p-2">{{user.username}}</p>
+      </span>
+    </div>
+  </div>
+</div>
+{% endblock content %}

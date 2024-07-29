@@ -1,0 +1,5 @@
+Client secret:  f86e280f6656a1a0a2390d407bc8ddc86d8643c8
+
+App ID: 880000
+
+Client ID: Iv1.fd94bdaf1ce54d9e

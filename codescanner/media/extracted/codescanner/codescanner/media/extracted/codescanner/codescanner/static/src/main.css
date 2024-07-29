@@ -1,0 +1,51 @@
+/* custom-scrollbar.css */
+
+/* WebKit */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ece9e9;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Firefox */
+scrollbar {
+    width: 4px;
+}
+
+scrollbar-track {
+    background: #f1f1f1;
+}
+
+scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+
+ /* Style for overlay */
+ .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+            z-index: 999; /* Ensure it's above everything else */
+        }

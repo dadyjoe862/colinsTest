@@ -1,0 +1,41 @@
+{% extends "users/dashboard.html" %}
+
+{% block content %}
+
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-6 text-center">Scan Results</h1>
+    <div class="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
+        <div class="max-w-full overflow-x-auto">
+            <table class="w-full table-auto text-xs">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 border">File Path</th>
+                        <th class="px-4 py-2 border">Vulnerability Type</th>
+                        <th class="px-4 py-2 border">Vulnerability Name</th>
+                        <th class="px-4 py-2 border text-center">Line Number</th>
+                        <th class="px-4 py-2 border">Code Snippet</th>
+                        <th class="px-4 py-2 border">Result</th>
+                        <th class="px-4 py-2 border">Recommendation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in scan_results %}
+                    <tr>
+                        <td class="px-4 py-2 border">{{ result.file_path }}</td>
+                        <td class="px-4 py-2 border">{{ result.vulnerability_type }}</td>
+                        <td class="px-4 py-2 border">{{ result.vulnerability_name }}</td>
+                        <td class="px-4 py-2 border text-center text-green-500 font-bold">{{ result.line_number }}</td>
+                        <td class="px-4 py-2 border">
+                            <pre class="whitespace-pre-wrap">{{ result.code_snippet }}</pre>
+                        </td>                        
+                        <td class="px-4 py-2 border text-red-500">{{ result.result }}</td>
+                        <td class="px-4 py-2 border text-blue-500">{{ result.recommendation }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

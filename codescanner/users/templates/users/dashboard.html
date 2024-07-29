@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load widget_tweaks %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+      <link rel="icon" href="{% static './icons/favicon.ico' %}" alt="logo">
+      <link href="{% static "./src/main.css" %}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head> 
+
+<body class="h-screen flex">
+
+    <aside id="sidebar" class="sidebar fixed top-0 left-0 w-64 h-[calc(100vh)] bg-slate-800 transition-width duration-300 ease-in-out hidden lg:block">
+        <div class="flex text-white text-center font-bold p-2 shadow-xl bg-slate-800">
+            <div class="flex flex-row gap-2 items-center">
+                <img class="w-12 h-12 rounded-full shadow-xl" src="{% static './imgs/user.jpg' %}" alt="person" />
+                <div class="text-sm text-white text-center flex flex-col justify-center items-center">
+                    <span id="uname">{{user.username}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="py-10">
+            <ul class="flex flex-col">
+                <li class="py-1 group hover:bg-slate-100 flex items-center gap-2 text-white hover:text-black group" role="none">
+                    <a href="{% url 'users-dashboard' %}" class="flex items-center gap-4 px-3 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-speedometer2" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4M3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.39.39 0 0 0-.029-.518z"/>
+                            <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A8 8 0 0 1 0 10m8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3"/>
+                        </svg>
+                        <p id="d" class="linkp block px-4 py-2 text-sm" role="menuitem">Dashboard</p>
+                    </a>
+                </li>
+                <li  class="py-1 group hover:bg-slate-100 flex items-center gap-2 text-white hover:text-black" role="none">
+                    <a href="{% url "repos" %}" class="flex items-center gap-4 px-3 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
+                            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z"/>
+                            <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8m0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0M4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                          </svg>
+                        <p id="f"  class=" linkp block px-4 py-2 text-sm " role="menuitem">Repositories</p>
+                    </a>
+                </li>
+                <li  class="py-1 group hover:bg-slate-100 flex items-center gap-2 text-white hover:text-black" role="none">
+                    <a href="{% url "render_scan_results" %}" class="flex items-center gap-4 px-3 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-eyeglasses" viewBox="0 0 16 16">
+                            <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4m2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A2 2 0 0 0 8 6c-.532 0-1.016.208-1.375.547M14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/>
+                          </svg>
+                        <p id="f"  class=" linkp block px-4 py-2 text-sm " role="menuitem">Result</p>
+                    </a>
+                </li>
+                <li  class="py-1 group hover:bg-slate-100 flex items-center gap-2 text-white hover:text-black" role="none">
+                    <a href="{% url "code_analysis" %}" class="flex items-center gap-4 px-3 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-clipboard2-data" viewBox="0 0 16 16">
+                            <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z"/>
+                            <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z"/>
+                            <path d="M10 7a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm4-3a1 1 0 0 0-1 1v3a1 1 0 1 0 2 0V9a1 1 0 0 0-1-1"/>
+                          </svg>
+                        <p id="a"  class=" linkp block px-4 py-2 text-sm " role="menuitem">Code Analysis</p>
+                    </a>
+                </li>
+                <li  class="py-1 group hover:bg-slate-100 flex items-center gap-2 text-white hover:text-black" role="none">
+                    <a href="{% url "report" %}" class="flex items-center gap-4 px-3 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+                            <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
+                            <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                          </svg>
+                        <p id="r"  class=" linkp block px-4 py-2 text-sm " role="menuitem">Report</p>
+                    </a>
+                </li>
+                <li  class="py-1 group hover:bg-slate-100 flex items-center gap-2 text-white hover:text-black" role="none">
+                    <a href="" class="flex items-center gap-4 px-3 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-question-octagon" viewBox="0 0 16 16">
+                            <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z"/>
+                            <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                          </svg>
+                        <p id="fq"  class=" linkp block px-4 py-2 text-sm " role="menuitem">FAQ</p>
+                    </a>
+                </li>
+                <li  class="py-1 group hover:bg-slate-100 flex items-center gap-2 text-white hover:text-black" role="none">
+                    <a href="{% url "users-logout" %}"  class=" flex items-center gap-4 px-3 p-2" role="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-power" viewBox="0 0 16 16">
+                            <path d="M7.5 1v7h1V1z"/>
+                            <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"/>
+                          </svg>
+                        <p id="l"  class=" linkp block px-4 py-2 text-sm" role="menuitem">logout</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    
+
+
+
+        <div id="main_body" class=" lg:ml-64 h-[calc(100vh)] overflow-auto w-full transition-width duration-300 ease-in-out">
+            <!-- navigation menu of the Dashboard  -->
+            <nav id="nav_bar" class="flex flex-col bg-slate-50 shadow-md p-3 fixed right-0 left-0 lg:left-64 transition-width duration-300 ease-in-out">
+                <div class="flex flex-row justify-between ">
+                    <div class="text-center flex items-center gap-4">
+                        <div class=" flex items-center text-3xl gap-2 font-bold text-emerald-800">
+                            <p class=" text-slate-800 ">CodESec</p>
+                        </div>
+                        <a href="#" id="toggle_items">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        {% comment %} dropdown menu  {% endcomment %}
+                        <div class="relative inline-block text-left">
+                            <a class="inline-flex justify-center py-2 text-sm font-medium text-white rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" id="options-menu" aria-expanded="true" aria-haspopup="true" onclick="toggleDropdown()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-sliders stroke-slate-800" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1z"/>
+                                </svg>
+                            </a>
+                          
+                            <div id="dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                <a href="{% url "users-profile" %}" class="py-1 group hover:bg-slate-100 flex items-center gap-2" role="none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-gear ml-4" viewBox="0 0 16 16">
+                                        <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1zm3.63-4.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l-.074.136c-.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0"/>
+                                    </svg>
+                                    <p class="block px-4 py-2 text-sm" role="menuitem">Profile settings</p>
+                                </a>
+                                <a href="{% url "users-profile" %}" class="py-1 group hover:bg-slate-100 flex items-center gap-2" role="none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-sun ml-4" viewBox="0 0 16 16">
+                                        <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"/>
+                                    </svg>
+                                    <p class="block px-4 py-2 text-sm" role="menuitem">Light Mode</p>
+                                </a>
+                                <a href="{% url "users-profile" %}" class="py-1 group hover:bg-slate-100 flex items-center gap-2" role="none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-moon ml-4" viewBox="0 0 16 16">
+                                        <path d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286"/>
+                                    </svg>
+                                    <p class="block px-4 py-2 text-sm" role="menuitem">Dark Mode</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </nav>
+
+            <!-- main section of the page in the Dashboard  -->
+
+            {% block content %}
+            <main class="flex flex-col flex-1 p-4 h-full mt-16 relative z-20">
+                <div id="upload_success_msg"></div> <!-- This element should exist -->
+                <!-- Loader in the main tag -->
+                <div id="loader" class="absolute inset-0 flex items-center justify-center bg-white z-50">
+                    <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-emerald-800"></div>
+                </div>
+
+                <!-- Actual main content goes here -->
+                <div class="flex flex-row justify-between items-center p-1 hidden md:flex">
+                    <p class="text-xl text-slate-900 font-semibold">Dashboard</p>
+                    <div class="flex gap-2">
+                        <span class="text-slate-700 text-center font-bold border-r-2 border-slate-500 p-1" id="clock"></span>
+                        <span class="text-slate-700 text-center font-bold p-1" id="date"></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4 justify-center">
+                    <span class="bg-blue-100 shadow-xl p-2 text-center w-1/2 self-center">
+                        please select where you want to load your code from for scanning.
+                    </span>
+                     <ul class="flex gap-2 self-center">
+                        <li>
+                            <a href="" class="py-3 px-6 gap-4 rounded group text-white bg-slate-800 hover:bg-slate-700 flex items-center justify-center" role="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-box-arrow-up-right ml-4 " viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                                      </svg>
+                                  </svg>
+                                    <p class="block text-sm font-bold" role="menuitem"> GitHub</p>
+                                </a>
+                        </li> 
+                        <li>
+                            <a href="#" id="modelOpen" class="py-3 px-6 gap-4 rounded group text-white bg-slate-800 hover:bg-slate-700 flex items-center justify-center"  role="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-pc-horizontal" viewBox="0 0 16 16">
+                                    <path d="M1 6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1zm11.5 1a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1m2 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1M1 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5M1.25 9h5.5a.25.25 0 0 1 0 .5h-5.5a.25.25 0 0 1 0-.5"/>
+                                </svg>
+                                <p class="block text-sm font-bold" role="menuitem">Computer</p>
+                            </a>
+                        </li> 
+                     </ul>
+                </div>
+                {% comment %} popup  {% endcomment %}
+                <div id="model" class="fixed inset-0 bg-slate-600 bg-opacity-50 z-100 hidden transition ease-in-out delay-300 flex items-center justify-center">
+                    <div class="bg-white p-6 rounded shadow-xl">
+                        <h2 class="text-lg font-semibold mb-4">Select Repository</h2>
+            
+                        <form id="uploadForm" action="" class="flex flex-col gap-4">
+                            {% csrf_token %}
+                            <input type="file" id="fileInput" webkitdirectory multiple class="border p-2" />
+                            <div class="flex gap-4 mt-4">
+                                <a href="" id="closeModel" class="bg-red-500 p-3 font-semibold rounded text-white">Close</a>
+                                <button type="button" onclick="uploadFiles()" id="populateTableBtn" class="bg-green-500 p-3 font-semibold rounded text-white">Load repository</button>
+                            </div>
+                        </form>
+                        <div id="progressContainer" class="hidden mt-4">
+                            <div class="relative pt-1">
+                                <div class="flex mb-2 items-center justify-between">
+                                    <div>
+                                        <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
+                                            Uploading
+                                        </span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span id="uploadPercentage" class="text-xs font-semibold inline-block text-green-600">
+                                            
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="overflow-hidden h-2 mb-4 p-2 text-xs flex rounded bg-green-500">
+                                    <div id="uploadProgress" style="width: 0%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 text-white"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="upload_success_msg" class="mt-4 text-green-600 font-semibold"></div>
+                    </div>
+                </div>
+
+                <div class="container mx-auto  py-4"> 
+                    <div class="flex gap-6 items-center bg-slate-100 p-3 ">
+                        <span class="text-xl font-bold">Repository</span>
+                        <ul class="flex gap-8">
+                            <li class="text-base hover:underline">All</li>
+                            <li class="text-base hover:underline">GitHub</li>
+                            <li class="text-base hover:underline">Local</li>
+                        </ul>
+                    </div>
+                    <div class="container mx-auto mt-10">
+                        <div id="folders-container" class="flex flex-col gap-6"></div>
+                    </div>
+                </div>
+                <div id="upload_success_msg" class="mt-2 p-1"></div>
+                
+            </main>
+        {% endblock content %} 
+        </div>
+
+
+    <!-- Include Tailwind JavaScript for responsive navigation -->
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script> 
+    <script src="{% static "./src/main.js" %}"></script>
+    <script src="{% static "./src/local.js" %}"></script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="{% static "./src/repo_load.js" %}"></script>
+    <script src="{% static "./src/dash_repo_scan.js" %}"></script>
+    <script src="{% static "./src/report.js" %}"></script>
+</body>
+</html>

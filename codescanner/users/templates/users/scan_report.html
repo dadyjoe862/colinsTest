@@ -1,0 +1,22 @@
+{% extends "users/dashboard.html" %}
+
+{% block content %}
+
+<div class="container mx-auto mt-20 bg-gray-100 p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-4">Select a Folder to View <span class="text-red-500">Vulnerability Report</span></h1>
+    <form id="folder-selection-form">
+        <div class="mb-4 w-full md:w-1/2">
+            <label for="folder" class="block text-lg mb-2">Select Folder:</label>
+            <select name="folder" id="folder" class="border rounded p-2 w-full">
+                <option value="" selected disabled>Select a folder</option>
+            </select>
+        </div>
+        <button id="print-button" class="bg-blue-500 text-white px-4 py-2 rounded">Print Report</button>
+    </form>
+
+    <div id="report-container" class="mt-4 bg-white p-6 border rounded">
+        <!-- Report content will be populated here -->
+    </div>
+</div>
+
+{% endblock content %}

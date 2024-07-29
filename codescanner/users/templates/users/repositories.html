@@ -1,0 +1,32 @@
+{% extends "users/dashboard.html" %}
+
+{% block content %}
+    {% comment %} the repositories  {% endcomment %}
+    <div class="flex flex-col flex-1 p-4 h-full mt-16 p-6 relative z-80">
+        <div class="flex gap-6 items-center bg-slate-100 p-3 shadow-sm">
+            <span class="text-2xl font-bold">Repository</span>
+            <ul class="flex gap-8">
+                <li class="text-lg hover:underline">All</li>
+                <li class="text-lg hover:underline">GitHub</li>
+                <li class="text-lg hover:underline">Local</li>
+            </ul>
+        </div>
+        <div class="flex shadow-xl p-2">
+            <div class="w-1/3 border-r border-gray-200">
+                <div class="overflow-y-auto max-h-96" id="folder-structure">
+                    <h2 class="text-xl font-semibold mb-4">Folders</h2>
+                    <!-- Folder structure will be rendered here -->
+                </div>
+            </div>
+            <div class="w-2/3">
+                <div class="overflow-y-auto max-h-screen p-4 bg-slate-50 h-full w-full" id="file-list">
+                    <h2 id="file-list-title" class="text-xl font-semibold mb-4 text-center text-slate-400">Files for selected repository</h2>
+                    <div class="file-list bg-slate-50 hover:bg-white">
+                        <!-- File list will be rendered here -->
+                        <div id="file-content" class="file-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
