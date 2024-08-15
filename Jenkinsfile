@@ -1,10 +1,9 @@
-
 pipeline {
     agent any
     stages{
         stage("world"){
             steps{
-            echo 'hellow wors'
+                echo 'hellow worlds'
 }
     }
 
@@ -16,3 +15,4 @@ pipeline {
         }
 
 }
+
